@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Velpula UJwala - Portfolio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2c3e50;
+            --background-color: #ffffff;
+            --text-color: #333333;
+        }
+
+        .dark-theme {
+            --background-color: #1a1a1a;
+            --text-color: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+            transition: background-color 0.3s;
+        }
+
+        body {
+            background: var(--background-color);
+            color: var(--text-color);
+        }
+
+        /* Modal Styles */
+        .cert-modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.9);
+        }
+
+        .modal-content {
+            margin: auto;
+            display: block;
+            width: 80%;
+            max-width: 700px;
+            max-height: 90vh;
+            object-fit: contain;
+            position: relative;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 35px;
+            color: white;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .close-modal:hover {
+            color: var(--primary-color);
+        }
+
+        .certificate-image {
+            cursor: pointer;
+            transition: transform 0.3s;
+            width: 100%;
+            height: 200px;
+            object-fit: contain;
+            margin-bottom: 1rem;
+            border-radius: 4px;
+            background: #f5f5f5;
+            padding: 10px;
+        }
+
+        .dark-theme .certificate-image {
+            background: #2d2d2d;
+        }
+
+        header {
+            background: var(--secondary-color);
+            color: white;
+            padding: 1rem;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, #2c3e50, #3498db);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+
+        .theme-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        section {
+            padding: 6rem 2rem 4rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        h1 {
+            font-size: 2.8rem;
+            background: linear-gradient(45deg, var(--secondary-color), var(--primary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        h2 {
+            font-size: 2rem;
+            position: relative;
+            margin-bottom: 3rem;
+        }
+
+        h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 60px;
+            height: 3px;
+            background: var(--primary-color);
+        }
+
+        #about {
+            display: flex;
+            align-items: center;
+            gap: 3rem;
+            margin-top: 4rem;
+        }
+
+        #about img {
+            border-radius: 50%;
+            box-shadow: 0 0 20px rgba(0,0,0,0.2);
+            width: 200px;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .skills-container {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+
+        .skill-chip {
+            background: var(--primary-color);
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+            cursor: default;
+        }
+
+        .skill-chip:hover {
+            background: var(--secondary-color);
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(52,152,219,0.3);
+        }
+
+        .certificates-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .certificate-card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 1.5rem;
+            transition: transform 0.3s;
+            background: var(--background-color);
+            cursor: pointer;
+        }
+
+        .certificate-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .project-card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 1rem;
+            transition: transform 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-image-link {
+            display: block;
+            position: relative;
+        }
+
+        .project-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+
+        .project-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(44,62,80,0.9);
+            opacity: 0;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            color: white;
+            text-align: center;
+            padding: 1rem;
+            pointer-events: none;
+        }
+
+        .project-card:hover .project-overlay {
+            opacity: 1;
+        }
+
+        .project-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .project-links a {
+            color: white;
+            font-size: 1.2rem;
+            transition: transform 0.3s;
+            pointer-events: auto;
+        }
+
+        .project-links a:hover {
+            transform: scale(1.2);
+        }
+
+        #contact {
+            background: #f8f9fa;
+            text-align: center;
+        }
+
+        .contact-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        footer {
+            background: var(--secondary-color);
+            color: white;
+            text-align: center;
+            padding: 1rem;
+            margin-top: 4rem;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 768px) {
+            #about {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .projects-grid,
+            .certificates-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Certificate Modal -->
+    <div id="certModal" class="cert-modal">
+        <span class="close-modal">&times;</span>
+        <img class="modal-content" id="modalImage">
+    </div>
+
+    <header>
+        <nav>
+            <div class="logo">UJ</div>
+            <div class="nav-links">
+                <a href="#about">About</a>
+                <a href="#skills">Skills</a>
+                <a href="#experience">Experience</a>
+                <a href="#certifications">Certifications</a>
+                <a href="#projects">Projects</a>
+                <a href="#contact">Contact</a>
+                <button id="theme-toggle" class="theme-btn">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <section id="about">
+        <img src="https://raw.githubusercontent.com/Ujwalvelpula/codSoft_lev1_task2/refs/heads/main/image.png" alt="UJwala">
+        <div>
+            <h1>UJwala Velpula</h1>
+            <h2>Full Stack Developer</h2>
+            <p>
+                I am a passionate and dedicated B.Tech graduate specializing in Artificial Intelligence with a strong foundation in full stack development. I possess technical expertise in Python, HTML, CSS, JavaScript, React, and cloud computing (AWS). I am a quick learner, problem solver, and a strong communicator who thrives in collaborative environments.
+            </p><br>
+            <p>
+                I enjoy building efficient, user-friendly web applications and constantly strive to learn new technologies and improve my skills. I am fluent in English and Telugu and take pride in delivering quality results with a keen eye for detail.
+            </p>
+            <p><strong>Educational Qualifications:</strong></p><br>
+            <ul>
+                <li><strong>B.Tech in Artificial Intelligence</strong> (Jun 2022 - Ongoing)<br>SVR Engineering College, Nandyal</li><br>
+                <li><strong>12th (M.P.C)</strong> (May 2020 - Mar 2022)<br>Nucleus Junior College | Score: 82%</li><br>
+                <li><strong>SSC (10th)</strong><br>A.P. Model School | Marks: 578/600</li>
+            </ul>
+        </div>
+    </section>
+
+    <section id="skills">
+        <h2>Technical Skills</h2>
+        <div class="skills-container">
+            <div class="skill-chip">HTML5</div>
+            <div class="skill-chip">CSS3</div>
+            <div class="skill-chip">JavaScript</div>
+            <div class="skill-chip">Python</div>
+            <div class="skill-chip">AWS</div>
+            <div class="skill-chip">Machine Learning</div>
+            <div class="skill-chip">Git & GitHub</div>
+            <div class="skill-chip">SQL</div>
+        </div>
+    </section>
+    
+    <section id="experience">
+        <h2>Experience</h2>
+        <div class="certificates-grid">
+            <div class="certificate-card" onclick="openModal('https://raw.githubusercontent.com/Ujwalvelpula/myCerti/refs/heads/main/Codsoftinternship.png')">
+                <img src="https://raw.githubusercontent.com/Ujwalvelpula/myCerti/refs/heads/main/Codsoftinternship.png" 
+                     alt="CodSoft Internship Certificate" 
+                     class="certificate-image">
+                <h3>Web Development Intern</h3>
+                <p>CodSoft</p>
+                <p>Apr 2025 – May 2025 | 4-week internship</p>
+            </div>
+        </div>
+    </section>
+    
+
+    <section id="certifications">
+        <h2>Certifications & Achievements</h2>
+        <div class="certificates-grid">
+            <!-- AWS Certification -->
+            <div class="certificate-card" onclick="openModal('https://raw.githubusercontent.com/Ujwalvelpula/myCerti/refs/heads/main/AWS(cc).png')">
+                <img src="https://raw.githubusercontent.com/Ujwalvelpula/myCerti/refs/heads/main/AWS(cc).png" 
+                     alt="AWS Certification" 
+                     class="certificate-image">
+                <h3>AWS Cloud Computing</h3>
+                <p>APSSDC</p>
+                <p>Jan 2025 | 5-day program</p>
+            </div>
+
+            <!-- Web Development -->
+            <div class="certificate-card" onclick="openModal('https://raw.githubusercontent.com/Ujwalvelpula/myCerti/refs/heads/main/eduskills%20web%20dev%20cert.png')">
+                <img src="https://raw.githubusercontent.com/Ujwalvelpula/myCerti/refs/heads/main/eduskills%20web%20dev%20cert.png" 
+                     alt="Web Development Certification" 
+                     class="certificate-image">
+                <h3>Web Development</h3>
+                <p>EduSkills</p>
+                <p>Completed Apr 2025</p>
+            </div>
+
+            <!-- Python -->
+            <div class="certificate-card" onclick="openModal('https://raw.githubusercontent.com/Ujwalvelpula/myCerti/refs/heads/main/python%20codefobe%20certi.png')">
+                <img src="https://raw.githubusercontent.com/Ujwalvelpula/myCerti/refs/heads/main/python%20codefobe%20certi.png" 
+                     alt="Python Certification" 
+                     class="certificate-image">
+                <h3>Python Programming (A+)</h3>
+                <p>CodeFobe</p>
+                <p>Feb 2025</p>
+            </div>
+
+            <!-- Machine Learning -->
+            <div class="certificate-card" onclick="openModal('https://raw.githubusercontent.com/Ujwalvelpula/myCerti/refs/heads/main/ml%20svr.png')">
+                <img src="https://raw.githubusercontent.com/Ujwalvelpula/myCerti/refs/heads/main/ml%20svr.png" 
+                     alt="ML Certification" 
+                     class="certificate-image">
+                <h3>Machine Learning Workshop</h3>
+                <p>SVR Engineering College</p>
+                <p>Sep 2024</p>
+            </div>
+
+            <!-- Project Excellence -->
+            <div class="certificate-card" onclick="openModal('https://raw.githubusercontent.com/Ujwalvelpula/myCerti/refs/heads/main/excelr%20project%20excellence%20cert.png')">
+                <img src="https://raw.githubusercontent.com/Ujwalvelpula/myCerti/refs/heads/main/excelr%20project%20excellence%20cert.png" 
+                     alt="Project Excellence Certification" 
+                     class="certificate-image">
+                <h3>Project Excellence</h3>
+                <p>ExcelR</p>
+                <p>Aug 2024</p>
+            </div>
+
+            <!-- Kaggle -->
+            <div class="certificate-card" onclick="openModal('https://raw.githubusercontent.com/Ujwalvelpula/myCerti/refs/heads/main/1%20Year%20on%20Kaggle.png')">
+                <img src="https://raw.githubusercontent.com/Ujwalvelpula/myCerti/refs/heads/main/1%20Year%20on%20Kaggle.png" 
+                     alt="Kaggle Badge" 
+                     class="certificate-image">
+                <h3>1 Year on Kaggle</h3>
+                <p>Kaggle</p>
+                <p>Continuous Learning</p>
+            </div>
+
+            <!-- IBM -->
+            <div class="certificate-card" onclick="openModal('https://raw.githubusercontent.com/Ujwalvelpula/myCerti/refs/heads/main/ibm%20cer.png')">
+                <img src="https://raw.githubusercontent.com/Ujwalvelpula/myCerti/refs/heads/main/ibm%20cer.png" 
+                     alt="IBM Certification" 
+                     class="certificate-image">
+                <h3>IBM Professional Certificate</h3>
+                <p>IBM</p>
+                <p>2024</p>
+            </div>
+
+            <!-- Quiz -->
+            <div class="certificate-card" onclick="openModal('https://raw.githubusercontent.com/Ujwalvelpula/myCerti/refs/heads/main/quiz%20certi%20svr.png')">
+                <img src="https://raw.githubusercontent.com/Ujwalvelpula/myCerti/refs/heads/main/quiz%20certi%20svr.png" 
+                     alt="Quiz Certificate" 
+                     class="certificate-image">
+                <h3>Technical Quiz Winner</h3>
+                <p>SVR Engineering College</p>
+                <p>2024</p>
+            </div>
+
+            <!-- Skilldunia -->
+            <div class="certificate-card" onclick="openModal('https://raw.githubusercontent.com/Ujwalvelpula/myCerti/refs/heads/main/skilldunia%20certi.png')">
+                <img src="https://raw.githubusercontent.com/Ujwalvelpula/myCerti/refs/heads/main/skilldunia%20certi.png" 
+                     alt="Skilldunia Certification" 
+                     class="certificate-image">
+                <h3>Skill Development Program</h3>
+                <p>Skilldunia</p>
+                <p>2024</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="projects">
+        <h2>Featured Projects</h2>
+        <div class="projects-grid">
+            <div class="project-card">
+                <a href="https://ujwalvelpula.github.io/codSoft_lev2_task1/" class="project-image-link" target="_blank">
+                    <img src="https://raw.githubusercontent.com/Ujwalvelpula/codSoft_lev2_task1/refs/heads/main/Screenshot%202025-04-25%20135109.png" alt="Tribute Page">
+                </a>
+                <div class="project-overlay">
+                    <h3>Tribute Page</h3>
+                    <p>A tribute to Savitri Garu</p>
+                    <div class="project-links">
+                        <a href="https://github.com/Ujwalvelpula/codSoft_lev2_task1" target="_blank" title="Source Code">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        <a href="https://ujwalvelpula.github.io/codSoft_lev2_task1/" target="_blank" title="Live Demo">
+                            <i class="fas fa-external-link-alt"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <a href="https://ujwalvelpula.github.io/wordWizard/" class="project-image-link" target="_blank">
+                    <img src="https://raw.githubusercontent.com/Ujwalvelpula/wordWizard/refs/heads/main/Screenshot%202025-04-25%20124451.png" alt="Word Wizard">
+                </a>
+                <div class="project-overlay">
+                    <h3>Word Wizard App</h3>
+                    <p>Text manipulation tool</p>
+                    <div class="project-links">
+                        <a href="https://github.com/Ujwalvelpula/wordWizard" target="_blank" title="Source Code">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        <a href="https://ujwalvelpula.github.io/wordWizard/" target="_blank" title="Live Demo">
+                            <i class="fas fa-external-link-alt"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact">
+        <h2>Contact</h2>
+        <div class="contact-links">
+            <a href="mailto:alaujw@gmail.com"> ✉️alaujw@gmail.com</a>
+            <a href="tel:+919866519188"> 📞+91 9866519188</a>
+            <a href="https://ujwalvelpula.github.io/resUme/" download> Download Resume</a>
+            <a href="https://github.com/Ujwalvelpula" target="_blank">
+                <i class="fab fa-github"></i> GitHub
+            </a>
+            <a href="https://www.linkedin.com/in/ujwalavelpula" target="_blank">
+                <i class="fab fa-linkedin"></i> LinkedIn
+            </a>
+        </div>
+    </section>
+    
+    <footer>
+        <p>&copy;  Velpula UJwala.</p>
+    </footer>
+
+    <script>
+        // Modal functionality
+        const modal = document.getElementById("certModal");
+        const modalImg = document.getElementById("modalImage");
+        const span = document.getElementsByClassName("close-modal")[0];
+
+        function openModal(imgSrc) {
+            modal.style.display = "block";
+            modalImg.src = imgSrc;
+        }
+
+        span.onclick = function() { 
+            modal.style.display = "none";
+        }
+
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+
+        document.addEventListener('keydown', function(event) {
+            if (event.key === "Escape") {
+                modal.style.display = "none";
+            }
+        });
+
+        // Dark mode toggle
+        const themeToggle = document.getElementById('theme-toggle');
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-theme');
+            const icon = themeToggle.querySelector('i');
+            icon.classList.toggle('fa-moon');
+            icon.classList.toggle('fa-sun');
+        });
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
